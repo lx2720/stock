@@ -1,5 +1,6 @@
 package vip.linhs.stock.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +31,15 @@ public class StockCrawlerServiceImpl implements StockCrawlerService {
 
     @Override
     public List<StockInfo> getStockList() {
-        String content = HttpUtil.sendGet(httpClient, "http://quote.eastmoney.com/stocklist.html", "gbk");
+        ArrayList<StockInfo> list = new ArrayList<>();
+        list.addAll(getStockList("ha"));
+        list.addAll(getStockList("sa"));
+        list.addAll(getStockList("gem"));
+        return list;
+    }
+
+    private List<StockInfo> getStockList(String type) {
+        String content = HttpUtil.sendGet(httpClient, "http://app.finance.ifeng.com/hq/list.php?type=stock_a&class=" + type, "utf-8");
         if (content != null) {
             return stockInfoParser.parseStockInfoList(content);
         }

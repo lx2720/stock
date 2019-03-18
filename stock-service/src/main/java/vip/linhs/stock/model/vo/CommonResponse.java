@@ -16,13 +16,13 @@ public class CommonResponse {
         this.message = message;
     }
 
+    public static CommonResponse buildResponse(String message) {
+        return new CommonResponse(message);
+    }
+
     @Override
     public String toString() {
         return "CommonResponse [message=" + message + "]";
-    }
-
-    public static CommonResponse buildResponse(String message) {
-        return new CommonResponse(message);
     }
 
 }

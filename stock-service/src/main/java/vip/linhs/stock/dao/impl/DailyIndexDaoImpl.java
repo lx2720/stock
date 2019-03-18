@@ -55,11 +55,12 @@ public class DailyIndexDaoImpl extends BaseDao implements DailyIndexDao {
     }
 
     @Override
-    public void setStockIdByCode(List<String> list) {
+    public void setStockIdByCodeType(List<String> list, int type) {
         String whereCause = String.join(",",
                 list.stream().map(str -> "?").collect(Collectors.toList()));
-        String sql = "update stock_log l, stock_info s set l.stock_info_id = s.id where l.new_value = s.code and s.id > 1 and s.code in ("
-                + whereCause + ")";
+        String sql = "update stock_log l, stock_info s set l.stock_info_id = s.id where l.new_value = s.name and s.id > 1 and s.code in ("
+                + whereCause + ") and l.type = ?";
+        list.add(String.valueOf(type));
         jdbcTemplate.update(sql, list.toArray());
     }
 

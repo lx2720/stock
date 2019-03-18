@@ -10,6 +10,6 @@ public interface DailyIndexDao {
 
     void save(List<DailyIndex> list);
 
-    void setStockIdByCode(List<String> list);
+    void setStockIdByCodeType(List<String> list, int type);
 
 }

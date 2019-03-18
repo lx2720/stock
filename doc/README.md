@@ -1,5 +1,6 @@
 列表
 http://quote.eastmoney.com/stocklist.html
+http://app.finance.ifeng.com/hq/list.php?type=stock_a&class=sa
 
 历史价格
 http://www.aigaogao.com/tools/history.html?s=000002

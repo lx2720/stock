@@ -17,8 +17,9 @@ import vip.linhs.stock.util.StockUtil;
 public class StockInfoParser {
 
     public List<StockInfo> parseStockInfoList(String content) {
+        content = content.replaceAll("Ａ", "A");
         Pattern pattern = Pattern.compile(
-                "<li><a target=\"_blank\" href=\"http://quote.eastmoney.com/(sh|sz)\\S{1,20}\\.html\">(\\S{1,20}?)\\((\\S{1,8})\\)</a></li>");
+                "<a href=\"http://finance.ifeng.com/app/hq/stock/(sh|sz)\\S{1,20}/index\\.shtml\" target=\"_blank\">(\\S{1,20}?)\\((\\S{1,8})\\)</a>");
         Matcher matcher = pattern.matcher(content);
 
         ArrayList<StockInfo> list = new ArrayList<>();

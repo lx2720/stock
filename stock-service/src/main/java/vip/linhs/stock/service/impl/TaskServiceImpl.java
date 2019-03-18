@@ -116,7 +116,7 @@ public class TaskServiceImpl implements TaskService {
                 Map<String, Object> robot = robotList.get(0);
                 String target = (String) robot.get("webhook");
                 Message message = new Message(StockConsts.MessageType.DingDing.value(), target,
-                        String.format("task: %s, error: %s", task.getName(), "sdsdd"),
+                        String.format("task: %s, error: %s", task.getName(), e.getMessage()),
                         new Date());
                 messageServicve.sendDingding(message);
             }
@@ -276,7 +276,7 @@ public class TaskServiceImpl implements TaskService {
                     }
                     sb.append(arr[0].charAt(0));
                 } catch (BadHanyuPinyinOutputFormatCombination e) {
-                    throw new ServiceException(e);
+                    throw new ServiceException("get pinyin error", e);
                 }
             }
         }

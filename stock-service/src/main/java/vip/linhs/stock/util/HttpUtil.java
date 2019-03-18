@@ -37,12 +37,11 @@ public class HttpUtil {
         return HttpUtil.sendRequest(httpClient, httpGet, charset);
     }
 
-    public static String sendPost(String url, List<BasicNameValuePair> parameters, CloseableHttpClient httpClient) {
-        return HttpUtil.sendPost(url, null, parameters, httpClient);
+    public static String sendPost(CloseableHttpClient httpClient, String url, List<BasicNameValuePair> parameters) {
+        return HttpUtil.sendPost(httpClient, url, null, parameters);
     }
 
-    public static String sendPost(String url, Map<String, String> header, List<BasicNameValuePair> parameters,
-            CloseableHttpClient httpClient) {
+    public static String sendPost(CloseableHttpClient httpClient, String url, Map<String, String> header, List<BasicNameValuePair> parameters) {
         HttpPost httpPost = HttpUtil.getHttpPost(url);
 
         if (header != null) {

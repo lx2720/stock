@@ -107,7 +107,7 @@ public class StockServiceImpl implements StockService {
         if (needAddedList != null && !needAddedList.isEmpty()) {
             List<String> newCodeList = needAddedList.stream().map(StockInfo::getCode)
                     .collect(Collectors.toList());
-            dailyIndexDao.setStockIdByCode(newCodeList);
+            dailyIndexDao.setStockIdByCodeType(newCodeList, StockConsts.StockLogType.New.value());
         }
     }
 
