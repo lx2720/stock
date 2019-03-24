@@ -210,9 +210,11 @@ public class TaskServiceImpl implements TaskService {
         final String currentDateStr = DateUtils.formatDate(new Date(), "yyyy-MM-dd");
         for (StockInfo stockInfo : list) {
             DailyIndex dailyIndex = stockCrawlerService.getDailyIndex(stockInfo.getExchange() + stockInfo.getCode());
-            if (dailyIndex != null &&
-                    DecimalUtil.bg(dailyIndex.getOpeningPrice(), BigDecimal.ZERO)
-                    && currentDateStr.equals(DateUtils.formatDate(dailyIndex.getDate(), "yyyy-MM-dd")) ) {
+            if (dailyIndex != null
+                    && DecimalUtil.bg(dailyIndex.getOpeningPrice(), BigDecimal.ZERO)
+                    && dailyIndex.getTradingVolume() > 0
+                    && DecimalUtil.bg(dailyIndex.getTradingValue(), BigDecimal.ZERO)
+                    && currentDateStr.equals(DateUtils.formatDate(dailyIndex.getDate(), "yyyy-MM-dd"))) {
                 dailyIndex.setStockInfoId(stockInfo.getId());
                 stockService.saveDailyIndex(dailyIndex);
             }

@@ -39,7 +39,7 @@ public class StockCrawlerServiceImpl implements StockCrawlerService {
     }
 
     private List<StockInfo> getStockList(String type) {
-        String content = HttpUtil.sendGet(httpClient, "http://app.finance.ifeng.com/hq/list.php?type=stock_a&class=" + type, "utf-8");
+        String content = HttpUtil.sendGet(httpClient, "http://app.finance.ifeng.com/hq/list.php?type=stock_a&class=" + type);
         if (content != null) {
             return stockInfoParser.parseStockInfoList(content);
         }

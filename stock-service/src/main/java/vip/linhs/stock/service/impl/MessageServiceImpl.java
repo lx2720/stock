@@ -24,7 +24,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void sendDingding(Message message) {
         Map<String, Object> params = buildMessageParams(message.getBody());
-        String content = HttpUtil.sendPostJson(message.getTarget(), params, httpClient);
+        String content = HttpUtil.sendPostJson(httpClient, message.getTarget(), params);
         logger.info("发送消息返回结果: {}", content);
     }
 

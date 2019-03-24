@@ -25,12 +25,22 @@ public class HttpUtil {
     }
 
     public static String sendGet(CloseableHttpClient httpClient, String url) {
-        HttpGet httpGet = HttpUtil.getHttpGet(url);
-        return HttpUtil.sendRequest(httpClient, httpGet, null);
+        return HttpUtil.sendGet(httpClient, url, null, null);
+    }
+
+    public static String sendGet(CloseableHttpClient httpClient, String url, Map<String, String> header) {
+        return HttpUtil.sendGet(httpClient, url, header, null);
     }
 
     public static String sendGet(CloseableHttpClient httpClient, String url, String charset) {
+        return HttpUtil.sendGet(httpClient, url, null, charset);
+    }
+
+    public static String sendGet(CloseableHttpClient httpClient, String url, Map<String, String> header, String charset) {
         HttpGet httpGet = HttpUtil.getHttpGet(url);
+        if (header != null) {
+            header.entrySet().stream().forEach(entry -> httpGet.addHeader(entry.getKey(), entry.getValue()));
+        }
         if (charset == null) {
             charset = Consts.UTF_8.name();
         }
@@ -38,10 +48,10 @@ public class HttpUtil {
     }
 
     public static String sendPost(CloseableHttpClient httpClient, String url, List<BasicNameValuePair> parameters) {
-        return HttpUtil.sendPost(httpClient, url, null, parameters);
+        return HttpUtil.sendPost(httpClient, url, parameters, null);
     }
 
-    public static String sendPost(CloseableHttpClient httpClient, String url, Map<String, String> header, List<BasicNameValuePair> parameters) {
+    public static String sendPost(CloseableHttpClient httpClient, String url, List<BasicNameValuePair> parameters, Map<String, String> header) {
         HttpPost httpPost = HttpUtil.getHttpPost(url);
 
         if (header != null) {
@@ -56,10 +66,8 @@ public class HttpUtil {
         return HttpUtil.sendRequest(httpClient, httpPost, Consts.UTF_8.name());
     }
 
-    public static String sendPostJson(String url, Map<String, Object> params, CloseableHttpClient httpClient) {
+    public static String sendPostJson(CloseableHttpClient httpClient, String url, Map<String, Object> params) {
         HttpPost httpPost = HttpUtil.getHttpPost(url);
-        httpPost.addHeader("Content-type", "application/json; charset=utf-8");
-
         String json = JSON.toJSONString(params);
         StringEntity entity = new StringEntity(json, Consts.UTF_8);
         httpPost.setEntity(entity);
@@ -68,6 +76,7 @@ public class HttpUtil {
     }
 
     private static String sendRequest(CloseableHttpClient httpClient, HttpUriRequest request, String charset) {
+        request.addHeader("Content-type", "application/json; charset=utf-8");
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             return EntityUtils.toString(response.getEntity(), charset);
         } catch (IOException ex) {
