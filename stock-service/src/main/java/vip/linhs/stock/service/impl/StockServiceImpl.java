@@ -3,6 +3,7 @@ package vip.linhs.stock.service.impl;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -164,9 +165,20 @@ public class StockServiceImpl implements StockService {
         dailyIndexDao.save(dailyIndex);
     }
 
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    @Override
+    public void saveDailyIndex(List<DailyIndex> list) {
+        dailyIndexDao.save(list);
+    }
+
     @Override
     public PageVo<StockInfo> getStockList(PageParam pageParam) {
         return stockDao.get(pageParam);
+    }
+
+    @Override
+    public boolean existsTodayDailyIndex() {
+        return dailyIndexDao.getDailyIndexByFullCodeAndDate("sz000001", new Date()) != null;
     }
 
 }

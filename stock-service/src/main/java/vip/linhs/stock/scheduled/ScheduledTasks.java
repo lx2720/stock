@@ -107,7 +107,7 @@ public class ScheduledTasks {
     /**
      * update of daily index
      */
-    @Scheduled(cron = "0 0 17 ? * MON-FRI")
+    @Scheduled(cron = "0 0 17,18,19 ? * MON-FRI")
     public void runUpdateOfDailyIndex() {
         boolean isHoliday = holidayCalendarService.isHoliday(new Date());
         if (isHoliday) {

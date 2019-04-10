@@ -203,11 +203,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private void runUpdateOfDailyIndex() {
+        if (stockService.existsTodayDailyIndex()) {
+            return;
+        }
+
         List<StockInfo> list = stockService.getAll().stream()
                 .filter(stockInfo -> stockInfo.getState() != StockConsts.StockState.Delisted.value()
                         && stockInfo.getState() != StockConsts.StockState.Terminated.value())
                 .collect(Collectors.toList());
         final String currentDateStr = DateUtils.formatDate(new Date(), "yyyy-MM-dd");
+        ArrayList<DailyIndex> needSaveList = new ArrayList<>();
         for (StockInfo stockInfo : list) {
             DailyIndex dailyIndex = stockCrawlerService.getDailyIndex(stockInfo.getExchange() + stockInfo.getCode());
             if (dailyIndex != null
@@ -216,8 +221,11 @@ public class TaskServiceImpl implements TaskService {
                     && DecimalUtil.bg(dailyIndex.getTradingValue(), BigDecimal.ZERO)
                     && currentDateStr.equals(DateUtils.formatDate(dailyIndex.getDate(), "yyyy-MM-dd"))) {
                 dailyIndex.setStockInfoId(stockInfo.getId());
-                stockService.saveDailyIndex(dailyIndex);
+                needSaveList.add(dailyIndex);
             }
+        }
+        if (!needSaveList.isEmpty()) {
+            stockService.saveDailyIndex(needSaveList);
         }
     }
 

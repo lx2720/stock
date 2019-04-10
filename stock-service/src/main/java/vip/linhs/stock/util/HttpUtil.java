@@ -68,6 +68,8 @@ public class HttpUtil {
 
     public static String sendPostJson(CloseableHttpClient httpClient, String url, Map<String, Object> params) {
         HttpPost httpPost = HttpUtil.getHttpPost(url);
+        httpPost.addHeader("Content-type", "application/json; charset=utf-8");
+
         String json = JSON.toJSONString(params);
         StringEntity entity = new StringEntity(json, Consts.UTF_8);
         httpPost.setEntity(entity);
@@ -76,7 +78,7 @@ public class HttpUtil {
     }
 
     private static String sendRequest(CloseableHttpClient httpClient, HttpUriRequest request, String charset) {
-        request.addHeader("Content-type", "application/json; charset=utf-8");
+        request.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36");
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             return EntityUtils.toString(response.getEntity(), charset);
         } catch (IOException ex) {
